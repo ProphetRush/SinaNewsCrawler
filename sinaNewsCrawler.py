@@ -30,6 +30,9 @@ def getJsonReturned(url):
         return ""
 
 def getCommentCount(url):
+    r = requests.get(url, timeout=30)
+    r.raise_for_status()
+    r.encoding = "unicode_escape"
 
 
 
