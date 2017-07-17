@@ -17,7 +17,6 @@ def run():
         for k in content:
             newsList.append(k)
     f = csv.writer(open("news.csv", "w+", encoding="utf"))
-    #newsJSON = json.loads(json.dumps(newsList))
     f.writerow(["title", "articleKeyword", "source", "commentCount", "publishTime", "url"])
     for x in newsList:
         f.writerow([x["title"], x["articleKeyword"], x["source"], x["commentCount"], x["publishTime"], x["url"]])
@@ -50,7 +49,7 @@ def wordCount(newsList):
         for i in kw:
             keywords.append(i)
     kw = collections.Counter(keywords)
-    s = sorted(kw.items(), key=lambda k: k [1], reverse=True)[:20]
+    s = sorted(kw.items(), key=lambda k: k[1], reverse=True)[:20]
     return s
 
 
@@ -63,17 +62,35 @@ def sourceCount(newsList):
     return scount
 
 
-def drawTimeDistribution(newsList):
+def TimeDistribution(newsList):
     timePeriod = list()
     for x in newsList:
         timePeriod.append(x["publishTime"][11:13])
     return collections.Counter(timePeriod)
 
 
+def commentDistribution(newList):
+    tmp = newList
+    s = sorted(tmp, key=lambda x: int(x['commentCount']), reverse=True)[:50]
+    return s
+
+
+
 
 
 a = run()
-print(drawTimeDistribution(a))
+print("keywordsDistribution:")
+print(wordCount(a))
+print("\nSourceCount:")
+print(sourceCount(a))
+print("\nTimeDistribution:")
+print(TimeDistribution(a))
+print("\nThe title of the highest comment news:")
+for x in commentDistribution(a)[:10]:
+    print(x['title'])
+    print("\n")
+print("\nThe keywords distribution of the highest comment news")
+print(wordCount(commentDistribution(a)))
 
 
 
